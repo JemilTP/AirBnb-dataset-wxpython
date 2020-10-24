@@ -244,11 +244,11 @@ class MyFrame(wx.Frame):
             clean.SetValue(path)
             clean.ShowModal()
         else:
-            if  button_pressed.GetLabel() == 'Enter Start date': #if start date has not been entered or enter strt date btn was pressed
-                date =  wx.TextEntryDialog(self, 'Enter Start Date : yyyy/mm/dd')
-                if date.ShowModal() == wx.ID_OK:
+            if  button_pressed.GetLabel() == 'Enter Start date': #: yyyy/mm/dd')
+                if date.ShowModal() == wx.ID_OK:   # if start date has not been entered or enter strt date btn was pressed
+                    date =  wx.TextEntryDialog(self, 'Enter Start Date ')
                     self.start_date = str(date.GetValue())
-     
+    
             if  button_pressed.GetLabel() == 'Enter End date':  #if end date has not been entered or enter end date btn was pressed
                 edate =  wx.TextEntryDialog(self, 'Enter End Date : yyyy/mm/dd')
                 if edate.ShowModal() == wx.ID_OK:
@@ -292,23 +292,40 @@ class MyFrame(wx.Frame):
                 
                     if input_suburb.ShowModal() == wx.ID_OK:
                     
-                        s = str(input_suburb.GetValue())  
+                        user_input = str(input_suburb.GetValue())  
                     
-                        result = report_listing_info.listings_in_suburb(s, self.start_date, self.end_date,1)
+                        result = report_listing_info.listings_in_suburb(user_input, self.start_date, self.end_date,1)
                         if len(result) != 0:
-                            if len(s) == 0:
+                            if len(user_input) == 0:
                                 title = 'Listings in all of Sydney'
                                 if len(self.start_date) != 0 and len(self.end_date):
                                     title = f'Listings in all of Sydney from {self.start_date} to {self.end_date}'
-                            elif len(self.start_date) != 0 and len(self.end_date):
-                                title = f'Listings in {s} from {self.start_date} to {self.end_date}'
                             else:
-                                title = f'Listings in all of {s}'
-                            results_(self, result, title, s, 0, 'Suburb',self.start_date,self.end_date)
+                                user_input = user_input.split(',')
+                                if len(user_input) == 1:
+                                    user_input = user_input[0][0].upper() + user_input[0][1:]
+                                else:
+                                    user_input_copy = user_input
+                                    user_input = str()
+                                    for k in range(len(user_input_copy)):
+                                        user_input_copy[k] = user_input_copy[k].lower()
+                                        user_input_copy[k] = user_input_copy[k][0].upper() + user_input_copy[k][1:]
+                                        if k != len(user_input_copy) - 1 and k != 0:
+                                            user_input += ', ' + user_input_copy[k] 
+                                        elif k == 0:
+                                            user_input += user_input_copy[k]
+                                        else:
+                                            user_input +=  ' and ' + user_input_copy[k]
+
+                                if len(self.start_date) != 0 and len(self.end_date) != 0:
+                                    title = f'Listings in {user_input} from {self.start_date} to {self.end_date}'
+                                else:
+                                    title = f'Listings in all of {user_input}'
+                            results_(self, result, title, user_input, 0, 'Suburb',self.start_date,self.end_date)
                             self.Close()
                         else:
                             error =  wx.TextEntryDialog(self, 'No results for suburb:')
-                            error.SetValue(f'{s}')
+                            error.SetValue(f'{user_input}')
                             error.ShowModal()
                         
                 if button_pressed.GetLabel() == 'Enter Key word':
