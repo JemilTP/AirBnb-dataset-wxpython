@@ -10,7 +10,7 @@ reviews = 'C:\\Users\\Admin\\Documents\\school t1\\Software Tech\\Project\\data\
 
 def format(date): #check is date is in yyyy/mm/dd format
     date = str(date)
-   
+    
     date = date.split('/')
     if len(date[0]) != 4 or len(date[1]) > 2  or len(date[1]) > 2 :
         return False
@@ -136,7 +136,7 @@ def comments(): #how many customers commented on factors related to clealiness
     return(dir_path)
 
 
-def price_distribtion(suburb, s,e,name):     #price distribution
+def price_distribution(suburb, s,e,name):     #price distribution
     noDate = False                       
     if len(s) == 0 or len(e) ==  0:
         noDate = True
@@ -149,17 +149,20 @@ def price_distribtion(suburb, s,e,name):     #price distribution
     if suburb == '':
         t = True  
         suburb = 'Sydney'                         #change into capital letters
-
+    suburb = suburb.split(',')
+    compare = True 
     for x in range(len(listings)):
         host_since = listings.at[x,'host_since']                      #loop through listings
         if noDate == False: #if date is provided
             
             compare  = compare_date(s, host_since)
-        else:
-            compare = True    #if no date was given and prices for all of the suburb was to be couted
-        if (str(listings.at[x,'city']).upper() == suburb or t) and compare:
-            p = listings.at[x,'price'].replace('$','').replace(',','')  #remove commas and dollar sign $, to convert to int
-            prices.append(int(float(p)))                         # add price to list
+        for sub in suburb:
+            #if no date was given and prices for all of the suburb was to be couted
+            if (str(listings.at[x,'city']).upper() == sub or t) and compare:
+                p = listings.at[x,'price'].replace('$','').replace(',','')  #remove commas and dollar sign $, to convert to int
+                prices.append(int(float(p)))                         # add price to list
+
+
     prices = sorted(prices)                                       #sort prces from low to high
     if len(prices) == 0:
         return(-1)
@@ -188,12 +191,35 @@ def price_distribtion(suburb, s,e,name):     #price distribution
     plt.bar(ind, dist, width)
     plt.xlabel('Prices per night $')
     plt.ylabel('Total')
-    if noDate:
-        title = f'Price Distribution for all of {suburb}' #if no date was given
+  
+
+
+    user_input = suburb
+    if len(user_input) == 1:
+        user_input = user_input[0][0].upper() + user_input[0][1:]
     else:
-        title = f'Price Distribution for {suburb}, {s} to {e}' #if dates were given, show dates in title 
+        user_input_copy = user_input
+        user_input = str()
+        for k in range(len(user_input_copy)):
+            user_input_copy[k] = user_input_copy[k].lower()
+            user_input_copy[k] = user_input_copy[k][0].upper() + user_input_copy[k][1:]
+            if k != len(user_input_copy) - 1 and k != 0:
+                user_input += ', ' + user_input_copy[k] 
+            elif k == 0:
+                user_input += user_input_copy[k]
+            else:
+                user_input +=  ' and ' + user_input_copy[k]
+
+
+    if noDate:
+        title = f'Price Distribution for all of {user_input}' #if no date was given
+    else:
+        title = f'Price Distribution for {user_input}, {s} to {e}' #if dates were given, show dates in title 
+
+
     plt.title(title)
     plt.xticks(ind,labels)  
     dir_path = os.path.dirname(os.path.realpath(__file__)) + '\\' + name + '.jpg'
     plt.savefig(dir_path)
     return(dir_path)
+price_distribution('Sydney,Manly','','','syd man')

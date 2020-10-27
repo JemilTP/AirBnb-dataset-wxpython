@@ -22,7 +22,7 @@ class dpanel(wx.ScrolledWindow,):
         self.func = func
         self.start_date = start_date
         self.end_date = end_date
-       
+
         
         x = 0
         for i in range(len(self.data)):
@@ -48,12 +48,10 @@ class dpanel(wx.ScrolledWindow,):
         inp = str(self.word)
         numb = int(self.num)
         if self.func == 'Suburb':
-            nextPagedata1 = report_listing_info.listings_in_suburb(inp,self.start_date,self.end_date, numb)
-        
+            nextPagedata1 = report_listing_info.listings_in_suburb(inp,self.start_date,self.end_date, numb)        
             next1 = results_(self,nextPagedata1, self.title, inp, numb, 'Suburb',self.start_date,self.end_date)
         else:
-            nextPagedata2 = report_listing_info.keyword(inp, self.start_date,self.end_date, numb)
-            
+            nextPagedata2 = report_listing_info.keyword(inp, self.start_date,self.end_date, numb)            
             next2 =  results_(self,nextPagedata2, self.title, inp, numb,'Keyword',self.start_date,self.end_date)
     def back(self, event):
         self.num -= 1
@@ -202,9 +200,9 @@ class MyFrame(wx.Frame):
         button2 = wx.Button(parent=self, label='Enter Key word', pos = (150, 150), size = (95,40))
         button3 = wx.Button(parent=self, label='Produce Chart', pos = (250, 150), size = (95,40))
         button4 = wx.Button(parent=self, label='Enter Start date', pos = (350, 150), size = (95,40))
-        button5= wx.Button(parent=self, label='Enter End date', pos = (450, 150), size = (95,40))
-        button6= wx.Button(parent=self, label='Analyse Clealiness', pos = (50, 225), size = (110,40))
-        button8= wx.Button(parent=self, label='Clear Dates', pos = (550, 150), size = (95,40))
+        button5 = wx.Button(parent=self, label='Enter End date', pos = (450, 150), size = (95,40))
+        button6 = wx.Button(parent=self, label='Analyse Clealiness', pos = (50, 225), size = (110,40))
+        button8 = wx.Button(parent=self, label='Clear Dates', pos = (550, 150), size = (95,40))
        
      
         font_names = wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL)
@@ -266,11 +264,11 @@ class MyFrame(wx.Frame):
             if check_dates:
                 if button_pressed.GetLabel() == 'Produce Chart':           
             
-                    input_suburb =  wx.TextEntryDialog(self, 'Enter Suburb or leave empty for all of sydney')
-                    input_suburb.SetValue("Sydney") 
-                    if input_suburb.ShowModal() == wx.ID_OK:
+                    input_sub =  wx.TextEntryDialog(self, 'Enter Suburb or leave empty for all of sydney')
+                    input_sub.SetValue("Sydney") 
+                    if input_sub.ShowModal() == wx.ID_OK:
                         file_name =  wx.TextEntryDialog(self, 'what would you like to name the plot image?')
-                        s = str(input_suburb.GetValue())
+                        s = str(input_sub.GetValue())
                         file_name.SetValue(s + '_price_data')
                         if file_name.ShowModal() == wx.ID_OK:
                             
