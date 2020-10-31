@@ -5,13 +5,15 @@ from datetime import datetime
 import os
 import webbrowser
 class dpanel(wx.ScrolledWindow,):
-    def __init__(self, parent, info, title, word, num,func, start_date, end_date):
+    def __init__(self, parent, info, title, word, num,func, start_date, end_date, length):
         
         wx.ScrolledWindow.__init__(self, parent, -1, style=wx.TAB_TRAVERSAL,)
         welcomeText = wx.StaticText(self, label= title, pos = (50,30))
         font = wx.Font(30, wx.ROMAN, wx.NORMAL, wx.NORMAL) 
         welcomeText.SetFont(font)
-        
+        stats = wx.StaticText(self, label = f'Number of results: {length}', pos = (50,100))
+        font2 = wx.Font(15, wx.ROMAN, wx.NORMAL,wx.NORMAL)
+        stats.SetFont(font2)
         gb = wx.GridBagSizer(vgap=0, hgap=3)
         self.num = num
         self.word = str(word)
@@ -78,7 +80,7 @@ class results_(wx.Frame):
                 back = wx.Button(parent = self, label = 'Back', size = (100,30), pos = (720,100))
                 back.Bind(wx.EVT_BUTTON,self.back)
             sz = wx.BoxSizer(wx.VERTICAL)
-            self.pa = dpanel(self, data, title, word, num, func, start_date, end_date)
+            self.pa = dpanel(self, data, title, word, num, func, start_date, end_date,len(data))
             sz.Add(self.pa, 1, wx.EXPAND)
           
             
@@ -264,7 +266,7 @@ class MyFrame(wx.Frame):
             if check_dates:
                 if button_pressed.GetLabel() == 'Produce Chart':           
             
-                    input_sub =  wx.TextEntryDialog(self, 'Enter Suburb or leave empty for all of sydney')
+                    input_sub  =  wx.TextEntryDialog(self, 'Enter Suburb or leave empty for all of sydney')
                     input_sub.SetValue("Sydney") 
                     if input_sub.ShowModal() == wx.ID_OK:
                         file_name =  wx.TextEntryDialog(self, 'what would you like to name the plot image?')

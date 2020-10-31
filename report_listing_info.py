@@ -125,7 +125,7 @@ def keyword(keyword,s,e, chunk): #return listing based on a keyword(s) and user 
 
 def comments(): #how many customers commented on factors related to clealiness
     import matplotlib.pyplot as plt # plotting
-    import numpy as np
+    import numpy as np 
     cleanliness = {'CLEAN' : 0,'DIRTY'  : 0,'HYGENIC'  : 0,'UNHYGENIC'  : 0,'HEALTHY'  : 0,'NEAT'  : 0,'UNCLEAN' : 0 } #words related to clealiness and their frequency
     total = 0
     s = 0
@@ -195,7 +195,7 @@ def price_distribution(suburb, s,e,name):     #price distribution
             dist.append(temp_sum)               #add total of listings with the range to list         
             
             temp_sum = 1                          #reset sum
-            labels.append(f'<{n}')                #add label to list e.g. <100,<200 ...etc
+            labels.append(f'<{n}')                #add la bel to list e.g. <100,<200 ...etc
             while n <= prices[y]:                 #loop to next range, e.g. if current range 100-200 and next value is 430, n needs to be 500 (400-500)
                 n += 100
             
